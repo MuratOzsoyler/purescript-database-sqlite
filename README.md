@@ -45,15 +45,18 @@ main = launchAff_ do
         Right row -> liftEffect $ Console.log $ "first item fetched: " <> show row
     -- first item fetched: {id: 1, name: "Murat"}
 
+    Sqlite3.close db
+    liftEffect $ Console.log "Database closed"
+
 decodeMbRow :: forall m. Monad m => Maybe Foreign -> FT m MyRow
 decodeMbRow Nothing = throwError $ NEL.singleton $ ForeignError "Row does not exist"
 decodeMbRow (Just f) = decodeRow f
 
 decodeRow :: forall m. Monad m => Foreign -> FT m MyRow
 decodeRow f = do
-  id <- f ! "id" >>= readInt
-  name <- f ! "name" >>= readString
-  pure { id, name }
+    id <- f ! "id" >>= readInt
+    name <- f ! "name" >>= readString
+    pure { id, name }
 ```
 
 ## Caveats
