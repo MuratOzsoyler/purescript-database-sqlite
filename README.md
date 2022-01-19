@@ -6,6 +6,8 @@ Yet another SqLite3 bindings to be future (almost) complete and to support lates
 
 Enter the following command to install:
 
+    npm install --save sqlite3
+
     spago install purescript-database-sqlite
 
 Don't forget to build afterwards.
