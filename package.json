@@ -1,0 +1,34 @@
+{
+  "name": "purescript-database-sqlite",
+  "version": "0.0.1",
+  "description": "Purecsript bindings for Sqlite3 database",
+  "main": "index.js",
+  "scripts": {
+    "build": "spago build",
+    "test": "spago test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MuratOzsoyler/purescript-database-sqlite.git"
+  },
+  "keywords": [
+    "database",
+    "sqlite",
+    "purescript"
+  ],
+  "author": "Murat Özsöyler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MuratOzsoyler/purescript-database-sqlite/issues"
+  },
+  "homepage": "https://github.com/MuratOzsoyler/purescript-database-sqlite#readme",
+  "devDependencies": {
+    "purescript": "^0.14.5",
+    "purescript-psa": "^0.8.2",
+    "purs-tidy": "^0.6.4",
+    "spago": "^0.20.3"
+  },
+  "dependencies": {
+    "sqlite3": "^5.0.2"
+  }
+}
