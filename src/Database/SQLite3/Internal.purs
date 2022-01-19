@@ -1,4 +1,4 @@
-module Database.Sqlite3.Internal
+module Database.SQLite3.Internal
   ( Database
   , OpenMode(..)
   , RunResult

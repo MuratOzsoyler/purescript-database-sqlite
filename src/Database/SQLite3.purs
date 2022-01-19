@@ -1,4 +1,4 @@
-module Database.Sqlite3
+module Database.SQLite3
   ( all
   , close
   , each
