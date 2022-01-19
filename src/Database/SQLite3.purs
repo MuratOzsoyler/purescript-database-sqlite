@@ -23,8 +23,8 @@ import Control.Monad.Except (runExcept, throwError)
 import Data.Either (Either(..))
 import Data.Enum (fromEnum)
 import Data.Maybe (Maybe)
-import Database.Sqlite3.Internal (Database, OpenMode(..), SqlQuery, SqlParam, SqlParams, RunResult, Statement, verbose) as Internal
-import Database.Sqlite3.Internal (Database, OpenMode, RunResult, SqlParam(..), SqlQuery, Statement, allImpl, closeImpl, eachImpl, execImpl, getImpl, newImpl, prepareImpl, runImpl, stmtAllImpl, stmtBindImpl, stmtEachImpl, stmtFinalizeImpl, stmtGetImpl, stmtResetImpl, stmtRunImpl)
+import Database.SQLite3.Internal (Database, OpenMode(..), SqlQuery, SqlParam, SqlParams, RunResult, Statement, verbose) as Internal
+import Database.SQLite3.Internal (Database, OpenMode, RunResult, SqlParam(..), SqlQuery, Statement, allImpl, closeImpl, eachImpl, execImpl, getImpl, newImpl, prepareImpl, runImpl, stmtAllImpl, stmtBindImpl, stmtEachImpl, stmtFinalizeImpl, stmtGetImpl, stmtResetImpl, stmtRunImpl)
 import Effect (Effect)
 import Effect.Aff (Aff, error)
 import Effect.Aff.Compat (fromEffectFnAff, mkEffectFn1)

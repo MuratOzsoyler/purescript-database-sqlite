@@ -10,8 +10,8 @@ import Data.Either (Either(..))
 import Data.List.NonEmpty as NEL
 import Data.Maybe (Maybe(..))
 import Data.Traversable (traverse)
-import Database.Sqlite3 as Sqlite3
-import Database.Sqlite3.Internal (SqlParam(..))
+import Database.SQLite3 as Sqlite3
+import Database.SQLite3.Internal (SqlParam(..))
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
