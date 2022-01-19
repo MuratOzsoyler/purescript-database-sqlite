@@ -1,16 +1,43 @@
 # PureScript SQLite3 Bindings
 
-Yet another SqLite3 bindings to be future (almost) complete and to support latest compiler version.
+Yet another SqLite3 bindings to be feature (almost) complete and to support latest compiler version.
 
 ## Installation
 
-Enter the following command to install:
+Enter the following command to install `node-sqlite3` package for `node`:
 
     npm install --save sqlite3
 
+Add this excerpt in the `package.dhall` of your project just after `in upstream` line (commit hash for `version` member could be changed so check the GitHub repository):
+```dhall
+in  upstream -- this line already exists
+  with database-sqlite =
+    { repo = "https://github.com/MuratOzsoyler/purescript-database-sqlite.git"
+    , version = "998e45a05e10221cd4408a87759c6be4ca7e0c85"
+    , dependencies =
+      [ "aff"
+      , "console"
+      , "effect"
+      , "either"
+      , "enums"
+      , "foldable-traversable"
+      , "foreign"
+      , "integers"
+      , "lists"
+      , "maybe"
+      , "node-path"
+      , "prelude"
+      , "psci-support"
+      , "transformers"
+      ]
+    }
+```
+
+I hope in the future you will be able to install the package as follows:
+
     spago install purescript-database-sqlite
 
-Don't forget to build afterwards.
+But it will not happen until the package set registry work is completed and package publish procedure is settled.
 
 ## Usage
 
@@ -65,11 +92,28 @@ Given the library is in its first versions and is not used extensively and autho
 
 `stmtRun` did not return any result at the time of development. I think this is a `node-sqlite3` bug but does not confirm it. The function can work or don't work regarding your `node-sqlite3` version so be aware. `Database` `run` function works anyways.
 
+## Future Development
+
+All function that receive parameter array should have variants suffixed with `_` and don't take parameter array argument.
+
+`withDatabase` and `withStatement` functions (and their `M` variants) would be handy for ease of use and automatic resource handling.
+
+Query functions just return `Foreign` or `Maybe Foreign` types leaving the conversion burden to the library user. There could be polymorphic variants of these to facilitate to use `Foreign.Class.Decode` class instances.
+
+Maybe in the future all or some of these take place in `database-sqlite-utils` library.
+
+
+## Bugs, Improvements and Feature Requests
+
+Use [issues](https://github.com/MuratOzsoyler/purescript-database-sqlite/issues) to message me whatever you want regarding the library.
+
+PRs are also welcome.
+
 ## Alternative Libraries
 
 [`purescript-node-sqite3`](https://pursuit.purescript.org/packages/purescript-sqlite/3.0.0) supports latest compiler versions. But only a small part of the API is implemented. As it is being used for such a long time this library is your first choice to go.
 
-[`purescript-sqlite`](https://pursuit.purescript.org/packages/purescript-node-sqlite3/6.0.0) is future rich as it is implemented most of the API. Also it contains some monad transformers to make usage more convenient. But unfortunately it is not maintained any more and does not support current version of compiler.
+[`purescript-sqlite`](https://pursuit.purescript.org/packages/purescript-node-sqlite3/6.0.0) is feature rich as it is implemented most of the API. Also it contains some monad transformers to make usage more convenient. But unfortunately it is not maintained any more and does not support current version of compiler.
 
 ## Acknowlegments
 
