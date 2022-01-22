@@ -16,7 +16,6 @@ exports.newImpl = path => mode => (onError, onSuccess) => {
     })
     if (!errOccurred)
         onSuccess(db)
-    console.log("newImpl: after success")
     return (cancelError, onCancelerError, onCancelerSuccess) => onCancelerSuccess()
 }
 
