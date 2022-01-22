@@ -8,7 +8,7 @@ import Prelude
 import Control.Monad.Except (runExcept, throwError)
 import Data.Either (Either(..))
 import Data.List.NonEmpty as NEL
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(..), isJust)
 import Data.Traversable (traverse)
 import Database.SQLite3 as Sqlite3
 import Database.SQLite3.Internal (SqlParam(..))
@@ -16,10 +16,10 @@ import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
 import Effect.Console as Console
-import Foreign (FT, Foreign, ForeignError(..), readInt, readString)
+import Foreign (FT, Foreign, ForeignError(..), readInt, readNull, readString)
 import Foreign.Index ((!))
 
-type MyRow = { id :: Int, name :: String }
+type MyRow = { id :: Int, name :: String, ref :: Maybe Int }
 
 main :: Effect Unit
 main = do
@@ -28,7 +28,7 @@ main = do
     db <- Sqlite3.new ":memory:" Sqlite3.OpenReadWriteCreate
     liftEffect $ Console.log "Database created"
 
-    result <- Sqlite3.run db "create table A (id integer not null primary key autoincrement, name varchar(30) not null)" []
+    result <- Sqlite3.run db "create table A (id integer not null primary key autoincrement, name varchar(30) not null, ref integer)" []
     liftEffect $ Console.log $ "table created: " <> show result
 
     insertResult <- Sqlite3.run db "insert into A (name) values('Murat')" []
@@ -107,6 +107,22 @@ insert into A (name) values('Gayruguppak')"""
         Right r -> liftEffect $ Console.log $ "item fetched via stmt#each: " <> show r
     liftEffect $ Console.log $ "Statement each fetched row: " <> show stmtEachResult
 
+    liftEffect $ Console.log "About to add row with null column explicitly"
+    nullAddResult <- Sqlite3.run db "insert into A (name, ref) values(?,?)" [ SqlString "Şeyda", SqlNull ]
+    liftEffect $ Console.log $ "Add row with null column explicitly. Result=" <> show nullAddResult
+    nullAddRow <- Sqlite3.get db "select * from A where id = ?" [ SqlInt nullAddResult.lastID ]
+    case runExcept $ decodeMbRow nullAddRow of
+      Left errors -> liftEffect $ Console.log $ "errors: " <> show errors -- map renderForeignError errors
+      Right row -> liftEffect $ Console.log $ "Got row added with null column explicitly. Result=" <> show row
+
+    liftEffect $ Console.log "About to add row with value column explicitly"
+    valueAddResult <- Sqlite3.run db "insert into A (name, ref) values(?,?)" [ SqlString "Dilek", SqlInt 42 ]
+    liftEffect $ Console.log $ "Add row with value column explicitly. Result=" <> show valueAddResult
+    valueAddRow <- Sqlite3.get db "select * from A where id = ?" [ SqlInt valueAddResult.lastID ]
+    case runExcept $ decodeMbRow valueAddRow of
+      Left errors -> liftEffect $ Console.log $ "errors: " <> show errors -- map renderForeignError errors
+      Right row -> liftEffect $ Console.log $ "Got row added with value column explicitly. Result=" <> show row
+
     liftEffect $ Console.log "About to finalize statements"
     Sqlite3.stmtFinalize stmt
     liftEffect $ Console.log "About to finalize stmt1"
@@ -129,7 +145,10 @@ decodeRow :: forall m. Monad m => Foreign -> FT m MyRow
 decodeRow f = do
   id <- f ! "id" >>= readInt
   name <- f ! "name" >>= readString
-  pure { id, name }
+  ref <- f ! "ref" >>= readNull >>= case _ of
+    Nothing -> pure Nothing
+    Just i -> Just <$> readInt i
+  pure { id, name, ref }
 
 decodeMbRow :: forall m. Monad m => Maybe Foreign -> FT m MyRow
 decodeMbRow Nothing = throwError $ NEL.singleton $ ForeignError "Row does not exist"
