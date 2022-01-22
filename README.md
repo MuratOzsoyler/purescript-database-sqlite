@@ -13,7 +13,7 @@ Add this excerpt in the `package.dhall` of your project just after `in upstream`
 in  upstream -- this line already exists
   with database-sqlite =
     { repo = "https://github.com/MuratOzsoyler/purescript-database-sqlite.git"
-    , version = "25f20bf9d008a816ccff7b29901a3ecff4345060"
+    , version = "bb80a3d5eb8759748981446d7a2ba8e0d0f01cd2"
       [ "aff"
       , "console"
       , "effect"
