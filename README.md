@@ -14,7 +14,6 @@ in  upstream -- this line already exists
   with database-sqlite =
     { repo = "https://github.com/MuratOzsoyler/purescript-database-sqlite.git"
     , version = "25f20bf9d008a816ccff7b29901a3ecff4345060"
-    , dependencies =
       [ "aff"
       , "console"
       , "effect"
@@ -26,6 +25,7 @@ in  upstream -- this line already exists
       , "lists"
       , "maybe"
       , "node-path"
+      , "nullable"
       , "prelude"
       , "psci-support"
       , "transformers"
