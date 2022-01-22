@@ -76,7 +76,7 @@ instance BoundedEnum OpenMode where
 foreign import data Database :: Type
 
 type SqlQuery = String
-data SqlParam = SqlString String | SqlInt Int | SqlNumber Number | SqlBoolean Boolean
+data SqlParam = SqlNull | SqlString String | SqlInt Int | SqlNumber Number | SqlBoolean Boolean
 
 derive instance Eq SqlParam
 derive instance Ord SqlParam

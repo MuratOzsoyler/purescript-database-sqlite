@@ -23,6 +23,7 @@ import Control.Monad.Except (runExcept, throwError)
 import Data.Either (Either(..))
 import Data.Enum (fromEnum)
 import Data.Maybe (Maybe)
+import Data.Nullable (null)
 import Database.SQLite3.Internal (Database, OpenMode(..), SqlQuery, SqlParam, SqlParams, RunResult, Statement, verbose) as Internal
 import Database.SQLite3.Internal (Database, OpenMode, RunResult, SqlParam(..), SqlQuery, Statement, allImpl, closeImpl, eachImpl, execImpl, getImpl, newImpl, prepareImpl, runImpl, stmtAllImpl, stmtBindImpl, stmtEachImpl, stmtFinalizeImpl, stmtGetImpl, stmtResetImpl, stmtRunImpl)
 import Effect (Effect)
@@ -46,6 +47,7 @@ coerceParams = unsafeToForeign <<< map coerceParam
 
 coerceParam :: SqlParam -> Foreign
 coerceParam = case _ of
+  SqlNull -> unsafeToForeign null
   SqlString s -> unsafeToForeign s
   SqlInt i -> unsafeToForeign i
   SqlNumber n -> unsafeToForeign n
